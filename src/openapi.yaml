@@ -1,0 +1,98 @@
+openapi: 3.0.0
+servers:
+  - url: "http://petstore.swagger.io/v2"
+info:
+  description: >-
+    This is a sample server Petstore server. For this sample, you can use the api key
+    `special-key` to test the authorization filters.
+  version: 1.0.0
+  title: OpenAPI Petstore
+  license:
+    name: Apache-2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+  - name: pet
+    description: Everything about your Pets
+  - name: store
+    description: Access to Petstore orders
+  - name: user
+    description: Operations about user
+paths:
+  /pet:
+    $ref: "./paths/pet.yaml"
+  /pet/findByStatus:
+    $ref: "./paths/pet_findByStatus.yaml"
+  /pet/findByTags:
+    $ref: "./paths/pet_findByTags.yaml"
+  "/pet/{petId}":
+    $ref: "./paths/pet_{petId}.yaml"
+  "/pet/{petId}/uploadImage":
+    $ref: "./paths/pet_{petId}_uploadImage.yaml"
+  /store/inventory:
+    $ref: "./paths/store_inventory.yaml"
+  /store/order:
+    $ref: "./paths/store_order.yaml"
+  "/store/order/{orderId}":
+    $ref: "./paths/store_order_{orderId}.yaml"
+  /user:
+    $ref: "./paths/user.yaml"
+  /user/createWithArray:
+    $ref: "./paths/user_createWithArray.yaml"
+  /user/createWithList:
+    $ref: "./paths/user_createWithList.yaml"
+  /user/login:
+    $ref: "./paths/user_login.yaml"
+  /user/logout:
+    $ref: "./paths/user_logout.yaml"
+  "/user/{username}":
+    $ref: "./paths/user_{username}.yaml"
+components:
+  schemas:
+    Order:
+      $ref: "./schemas/Order.yaml"
+    Category:
+      $ref: "./schemas/Category.yaml"
+    User:
+      $ref: "./schemas/User.yaml"
+    Tag:
+      $ref: "./schemas/Tag.yaml"
+    Pet:
+      $ref: "./schemas/Pet.yaml"
+    ApiResponse:
+      $ref: "./schemas/ApiResponse.yaml"
+  requestBodies:
+    UserArray:
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/User"
+      description: List of user object
+      required: true
+    Pet:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Pet"
+        application/xml:
+          schema:
+            $ref: "#/components/schemas/Pet"
+      description: Pet object that needs to be added to the store
+      required: true
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: "http://petstore.swagger.io/api/oauth/dialog"
+          scopes:
+            "write:pets": modify pets in your account
+            "read:pets": read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+externalDocs:
+  description: Find out more about Swagger
+  url: "http://swagger.io"
